@@ -58,10 +58,10 @@
 				camera.lookAt(0,0,0)
 				
 				var points = [];
-				for ( var i = -200; i < 200; i +=4 ) {
-					for (var j = -200; j < 200; j +=4)
+				for ( var i = -400; i < 400; i +=8 ) {
+					for (var j = -400; j < 400; j +=8)
 					// points.push( new THREE.Vector2( Math.sin( i * 0.2 ) * 10 + 5, ( i - 5 ) * 2 ) );
-					points.push( new THREE.Vector3( i, Math.sin( j / 4 * 0.2 ) * 10 + 5 , j) );
+					points.push( new THREE.Vector3( i, Math.sin( j / 4 * 0.2 ) * 6 + 3 , j) );
 				}
 				
 				// var vertices = new THREE.LatheGeometry( points ).vertices;
@@ -136,20 +136,32 @@
 				// stats.update();
 			}
 			
-			
+			var step = 0;
+			var angle = 0;
 			function render() {
+				step += 0.01;
+				angle += 0.001;
+				camera.position.z = Math.sin(angle) * 300;
+				camera.position.x = Math.cos(angle) * 300;
+				camera.lookAt(0,0,0);
 				// particles.rotation.x += 0.0005;
 				// particles.rotation.y += 0.001;
-
+				
 				var geometry = particles.geometry;
 				
 				var attributes = geometry.attributes;
-				// rayca ster.setFromCamera( mouse, camera );
-				// intersects = raycaster.intersectObject( particles );
-				var pointsArray = createPoint();
-				// pointsArray.__proto__ = attributes.position.array.__proto__;
-				// attributes.position.array = pointsArray;
+				
+				var arr = attributes.position.array;
+				var len = arr.length;
+				
+				for (var i = 1; i < len; i += 3) {
+					arr[i] = (new THREE.Vector2( 0, Math.sin((i % 300 ) / 4 * 0.2 + step ) * 6 + 3))['y'];
+				}
 				attributes.position.needsUpdate = true;
+// 				rayca ster.setFromCamera( mouse, camera );
+// 				intersects = raycaster.intersectObject( particles );
+				// var pointsArray = createPoint();
+				// attributes.position.needsUpdate = true;
 				
 // 				if ( intersects.length > 0 ) {
 // 					if ( INTERSECTED != intersects[ 0 ].index ) {
@@ -167,25 +179,24 @@
 			}
 			
 			
-			function createPoint(i) {
-				var i = i || 0;
-				var pointLength = 10000;
-				var positions = new Float32Array( pointLength * 3 );
-				var points = [];
-				for ( var i = -200; i < 200; i +=4 ) {
-					for (var j = -200; j < 200; j +=4)
-					points.push( new THREE.Vector3( i, Math.sin( j / 4 * 0.2 + 1 * 0.01 ) * 10 + 5 , j) );
-				}
-				
-					
-				points.forEach((p, i) => {
-					positions[i*3] = p.x;
-					positions[i*3+1] = p.y;
-					positions[i*3+2] = p.z;
-				})
-				console.log(positions)
-			}
-			createPoint();
+// 			function createPoint(i) {
+// 				var i = i || 0;
+// 				var pointLength = 10000;
+// 				var positions = new Float32Array( pointLength * 3 );
+// 				var points = [];
+// 				for ( var i = -200; i < 200; i +=4 ) {
+// 					for (var j = -200; j < 200; j +=4)
+// 					points.push( new THREE.Vector3( i, Math.sin( j / 4 * 0.2 + 1 * 0.01 ) * 10 + 5 , j) );
+// 				}
+// 				
+// 					
+// 				points.forEach((p, i) => {
+// 					positions[i*3] = p.x;
+// 					positions[i*3+1] = p.y;
+// 					positions[i*3+2] = p.z;
+// 				})
+// 			}
+// 			createPoint();
 		</script>
 	</body>
 </html>
