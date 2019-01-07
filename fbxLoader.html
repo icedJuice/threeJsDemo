@@ -16,7 +16,7 @@
 		<script src="static/js/FBXLoader.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/OrbitControls.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/Inflate.min.js" type="text/javascript" charset="utf-8"></script>
-		
+		<script src="static/js/state.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			
 			if ( WEBGL.isWebGLAvailable() === false ) {
@@ -84,7 +84,9 @@
 				renderer.shadowMap.enabled = true;
 				container.appendChild( renderer.domElement );
 				window.addEventListener( 'resize', onWindowResize, false );
-				// container.appendChild( stats.dom );
+				
+				stats = new Stats();
+				container.appendChild( stats.dom );
 			}
 			
 			function onWindowResize() {
@@ -99,7 +101,7 @@
 				var delta = clock.getDelta();
 				if ( mixer ) mixer.update( delta );
 				renderer.render( scene, camera );
-				// stats.update();
+				stats.update();
 			}
 
 			init();
